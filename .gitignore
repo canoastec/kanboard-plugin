@@ -1,0 +1,4 @@
+*.zip
+.env
+/vendor
+/node_modules

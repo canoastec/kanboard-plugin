@@ -1,0 +1,17 @@
+{
+    "name": "canoastec/kanboard-plugin",
+    "description": "plugin to kanboard",
+    "require": {
+        "php": ">=5.6",
+        "fguillot/json-rpc": "@stable",
+        "tightenco/collect": "^7.12",
+        "symfony/var-dumper": "^5.1",
+        "vlucas/phpdotenv": "^5.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "files": [
+            "Helper/functions.php"
+        ]
+    }
+}
