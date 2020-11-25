@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <project name="Ctec" default="zip" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
+    <property environment="env"/>
+    <property file="./build.properties" />
+
+    <target name="node">
+        <echo> Getting dependencies from node</echo>
+        <exec executable="sh" failonerror="true">
+            <arg value="-c" />
+            <arg value="npm-cache install npm --progress=false" />
+        </exec>
+    </target>
+
+    <target name="composer" depends="node" >
+        <echo>Getting dependencies from composer</echo>
+        <exec executable="sh"  failonerror="true" >
+            <arg value="-c" />
+            <arg value="php72 /usr/local/bin/composer/composer.phar install" />
+        </exec>
+    </target>
+
+    <target name="env-clean" depends="composer">
+        <delete file=".env" />
+    </target>
+
+    <target name="env-create" depends="env-clean">
+        <echo>Creating .env file </echo>
+        <exec executable="/bin/bash" output=".env" failonerror="true">
+            <arg value="generateEnvironment.sh" />
+			<arg value="${project-id}" />
+            <arg value="${query-current-sprint}" />
+            <arg value="${gestaosistemas-api}" />
+        </exec>
+    </target>
+
+    <target name="clean" depends="env-create">
+        <delete file="bin/${project-name}.zip" />
+        <mkdir dir="${binary-folder}"/>
+    </target>
+
+    <target name="webpack" depends="clean">
+        <echo>Generating CSS and JS files</echo>
+        <exec executable="sh" failonerror="true">
+            <arg value="-c" />
+            <arg value="npm run dev" />
+        </exec>
+    </target>
+
+	<target name="remove-dev-npm" depends="webpack" >
+        <echo>Remove NPM dev dependencies</echo>
+        <delete dir="./node_modules"/>
+    </target>
+
+    <target name="zip" depends="remove-dev-npm">
+        <defaultexcludes default="true"/>
+        <zip destfile="${binary-folder}/${project-name}.zip" basedir="." excludes="CHANGE*.txt, .gitignore, *.sh,nbproject/, build.xml, results/, bin/, tests/, phpunit.xml" />
+    </target>
+</project>
