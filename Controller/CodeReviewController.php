@@ -10,7 +10,6 @@ class CodeReviewController extends BaseController
 
     public function index()
     {
-
         $this->response->html($this->helper->layout->dashboard('ctec:dashboard/codereview', array(
             'title' => 'CodeReview / Desenvolvedor',
             'user' => $this->getUser(),
@@ -37,5 +36,20 @@ class CodeReviewController extends BaseController
         
         $this->codeReviewModel->create($task, $name);
         $this->response->redirect($this->helper->url->to('TaskViewController', 'show', array('task_id' => $task)), true);
+    }
+    
+    public function remove()
+    {
+        $id = $this->request->getStringParam('code_review_id');
+
+        $curl = curl_init(env('GESTAOSISTEMAS_API').'/remover');
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curl, CURLOPT_POSTFIELDS , ['id' => $id]);
+        curl_exec($curl);
+        curl_close($curl);
+        
+        $this->codeReviewModel->delete($id);
+        $this->response->redirect($this->helper->url->to('CodeReviewController', 'index', array('plugin' => 'ctec')), true);
     }
 }

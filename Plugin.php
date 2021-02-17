@@ -2,8 +2,9 @@
 
 namespace Kanboard\Plugin\Ctec;
 
-use Kanboard\Core\Plugin\Base;
 use Kanboard\Core\Translator;
+use Kanboard\Core\Plugin\Base;
+use Kanboard\Plugin\Ctec\Api\Procedure\CodeReviewProcedure;
 
 class Plugin extends Base
 {
@@ -14,6 +15,8 @@ class Plugin extends Base
 
         $this->template->hook->attach('template:dashboard:sidebar', 'ctec:dashboard/sidebar');
         $this->template->hook->attach('template:task:details:third-column', 'ctec:dashboard/task');
+
+        $this->api->getProcedureHandler()->withClassAndMethod('getAllTaskOfSprintWithCodeReview', new CodeReviewProcedure($this->container), 'getAllTaskOfSprintWithCodeReview');
     }
 
     public function getClasses()
@@ -59,4 +62,3 @@ class Plugin extends Base
         return 'https://github.com/canoastec/kanboard-plugin';
     }
 }
-

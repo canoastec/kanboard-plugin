@@ -55688,7 +55688,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('chart-vue', _src_Asset_Com
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\Projetos Canoastec\kanboard\plugins\Ctec\src\app.js */"./src/app.js");
+module.exports = __webpack_require__(/*! D:\workspace\kanboard\plugins\Ctec\src\app.js */"./src/app.js");
 
 
 /***/ })
