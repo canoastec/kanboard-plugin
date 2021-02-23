@@ -11,8 +11,9 @@ class Plugin extends Base
     public function initialize()
     {
         $this->setContentSecurityPolicy(array('script-src' => "'self' 'unsafe-inline' 'unsafe-eval'"));
-        $this->hook->on('template:layout:js', array('template' => 'plugins/ctec/dist/all.js'));
+        $this->hook->on('template:layout:js', array('template' => 'plugins/Ctec/dist/all.js'));
 
+        $this->template->hook->attach('template:config:sidebar', 'ctec:config/sidebar');
         $this->template->hook->attach('template:dashboard:sidebar', 'ctec:dashboard/sidebar');
         $this->template->hook->attach('template:task:details:third-column', 'ctec:dashboard/task');
 
@@ -24,7 +25,8 @@ class Plugin extends Base
         return array(
             'Plugin\Ctec\Controller' => array(
                 'CodeReviewController',
-                'DashboardController'
+                'DashboardController',
+                'SettingController'
             ),
             'Plugin\Ctec\Model' => array(
                 'CodeReviewModel'

@@ -57,7 +57,9 @@ class GenerateDataChartService
     private function timeChart($sprints)
     {
         $labels = [];
+        $estimated = [];
         $estimatedData = [];
+        $spent = [];
         $spentData = [];
         foreach ($sprints as $sprint){
             array_push($labels, $sprint['title']);
@@ -94,6 +96,7 @@ class GenerateDataChartService
     private function tasksChart($sprints)
     {
         $labels = [];
+        $tasks = [];
         $tasksData = [];
         foreach ($sprints as $sprint){
             array_push($labels, $sprint['title']);
@@ -122,6 +125,7 @@ class GenerateDataChartService
     private function percentageChart($sprints)
     {
         $labels = [];
+        $percentSpent = [];
         $percentSpentData = [];
         foreach ($sprints as $sprint){
             array_push($labels, $sprint['title']);

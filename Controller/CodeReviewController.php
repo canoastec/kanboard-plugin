@@ -21,8 +21,9 @@ class CodeReviewController extends BaseController
     {
         $name = $this->request->getStringParam('name');
         $task = $this->request->getStringParam('task');
+        $gestaosistemasApi = $this->configModel->getOption('gestaosistemas_api');
 
-        $curl = curl_init(env('GESTAOSISTEMAS_API'));
+        $curl = curl_init($gestaosistemasApi);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($curl, CURLOPT_POSTFIELDS , [
@@ -41,11 +42,17 @@ class CodeReviewController extends BaseController
     public function remove()
     {
         $id = $this->request->getStringParam('code_review_id');
+        $task = $this->request->getStringParam('task');
+        $name = $this->request->getStringParam('name');
+        $gestaosistemasApi = $this->configModel->getOption('gestaosistemas_api');
 
-        $curl = curl_init(env('GESTAOSISTEMAS_API').'/remover');
+        $curl = curl_init($gestaosistemasApi.'/remover');
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($curl, CURLOPT_POSTFIELDS , ['id' => $id]);
+        curl_setopt($curl, CURLOPT_POSTFIELDS , [
+            'activity' => 'Code Review',
+            'task' => $task,
+        ]);
         curl_exec($curl);
         curl_close($curl);
         

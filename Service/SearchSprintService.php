@@ -14,13 +14,15 @@ class SearchSprintService extends Base
     
     public function getAllSprints()
     {
+        $projectId = $this->configModel->getOption('project_id', 32);
         $tasks = $this->api
             ->getProcedureHandler()
             ->executeMethod(
                 new TaskProcedure($this->container), 
                 'searchTasks', 
-                [env('PROJECT_ID'), '']
+                [$projectId, '']
             );
+
         $tasks = collect($tasks);
 
         return $tasks->sortBy(function ($sprint){
@@ -30,12 +32,14 @@ class SearchSprintService extends Base
 
     public function getCurrentSprint()
     {
+        $queryCurrentSprint = $this->configModel->getOption('query_current_sprint', "column:Andamento");
+        $projectId = $this->configModel->getOption('project_id', 32);
         $sprint = $this->api
             ->getProcedureHandler()
             ->executeMethod(
                 new TaskProcedure($this->container), 
                 'searchTasks', 
-                [env('PROJECT_ID'), env('QUERY_CURRENT_SPRINT')]
+                [$projectId, $queryCurrentSprint]
             );
         $sprint = collect($sprint);
 
@@ -75,12 +79,13 @@ class SearchSprintService extends Base
    
     public function getSprint($sprintId)
     {
+        $projectId = $this->configModel->getOption('project_id', 32);
         $sprint = $this->api
             ->getProcedureHandler()
             ->executeMethod(
                 new TaskProcedure($this->container), 
                 'searchTasks', 
-                [env('PROJECT_ID'), "id:".$sprintId]
+                [$projectId, "id:".$sprintId]
             );
         $sprint = collect($sprint);
 

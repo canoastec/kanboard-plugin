@@ -16,7 +16,7 @@ class DashboardController extends BaseController
 
         $data['title'] = t('Grafico estimado x executado');
         $data['user'] = $this->getUser();
-        $this->hook->on('template:layout:js', array('template' => 'plugins/ctec/Asset/Js/charts.js'));
+        $this->hook->on('template:layout:js', array('template' => 'plugins/Ctec/Asset/Js/charts.js'));
         $this->response->html($this->helper->layout->dashboard('ctec:dashboard/charts', array(
             'title' => $data['title'],
             'user' => $data['user'],

@@ -13,6 +13,7 @@
                     $params =  array(
                         'plugin' => 'ctec', 
                         'code_review_id' => $review['id'], 
+                        'task' => $review['task_id'], 
                         'name' => $user['username']
                     );
             ?>
