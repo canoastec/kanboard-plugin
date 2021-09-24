@@ -5,20 +5,21 @@ namespace Kanboard\Plugin\Ctec\Controller;
 require __DIR__.'/../vendor/autoload.php';
 use Kanboard\Controller\BaseController;
 
-class CodeReviewController extends BaseController 
+class PairProgrammingController extends BaseController 
 {
 
     public function index()
     {
-        $this->response->html($this->helper->layout->dashboard('ctec:dashboard/codereview', array(
-            'title' => 'CodeReview / Desenvolvedor',
+        $this->response->html($this->helper->layout->dashboard('ctec:dashboard/pairprogramming', array(
+            'title' => 'Pareamento / Desenvolvedor',
             'user' => $this->getUser(),
-            'reviews' => $this->codeReviewModel->all()
+            'pairProgrammings' => $this->pairProgrammingModel->all()
         )));
     }
 
     public function new()
     {
+        $assignee = $this->request->getStringParam('assignee');
         $name = $this->request->getStringParam('name');
         $task = $this->request->getStringParam('task');
         $gestaosistemasApi = $this->configModel->getOption('gestaosistemas_api');
@@ -28,23 +29,24 @@ class CodeReviewController extends BaseController
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($curl, CURLOPT_POSTFIELDS , [
             'name' => $name,
-            'activity' => 'Code Review',
+            'assignee' => $assignee,
+            'activity' => 'Pareamento',
             'task' => $task,
         ]);
 
         curl_exec($curl);
         curl_close($curl);
         
-        $duplicate = $this->codeReviewModel->findByTaskAndName($task, $name);
+        $duplicate = $this->pairProgrammingModel->findByTaskAndName($task, $name);
         if (empty($duplicate)) {
-            $this->codeReviewModel->create($task, $name);
+            $this->pairProgrammingModel->create($task, $name, $assignee);
         }
         $this->response->redirect($this->helper->url->to('TaskViewController', 'show', array('task_id' => $task)), true);
     }
     
     public function remove()
     {
-        $id = $this->request->getStringParam('code_review_id');
+        $id = $this->request->getStringParam('pair_programming_id');
         $task = $this->request->getStringParam('task');
         $name = $this->request->getStringParam('name');
         $gestaosistemasApi = $this->configModel->getOption('gestaosistemas_api');
@@ -53,13 +55,13 @@ class CodeReviewController extends BaseController
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($curl, CURLOPT_POSTFIELDS , [
-            'activity' => 'Code Review',
+            'activity' => 'Pareamento',
             'task' => $task,
         ]);
         curl_exec($curl);
         curl_close($curl);
         
-        $this->codeReviewModel->delete($id);
-        $this->response->redirect($this->helper->url->to('CodeReviewController', 'index', array('plugin' => 'ctec')), true);
+        $this->pairProgrammingModel->delete($id);
+        $this->response->redirect($this->helper->url->to('PairProgrammingController', 'index', array('plugin' => 'ctec')), true);
     }
 }

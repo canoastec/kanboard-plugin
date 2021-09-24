@@ -43,6 +43,7 @@ class CodeReviewModel extends Base
                         UserModel::TABLE.'.name AS task_assignee_name',
                         ColumnModel::TABLE.'.title AS column_title',
                         ProjectModel::TABLE.'.name AS project_name',
+                        PairProgrammingModel::TABLE.'.name AS pair_programming_name',
                         self::TABLE.'.name as dev_name'
                     )
                     ->eq(TaskLinkModel::TABLE.'.task_id', $task_id)
@@ -52,12 +53,21 @@ class CodeReviewModel extends Base
                     ->join(UserModel::TABLE, 'id', 'owner_id', TaskModel::TABLE)
                     ->join(ProjectModel::TABLE, 'id', 'project_id', TaskModel::TABLE)
                     ->left(self::TABLE, self::TABLE, 'task_id', TaskModel::TABLE, 'id')
+                    ->left(PairProgrammingModel::TABLE, PairProgrammingModel::TABLE, 'task_id', TaskModel::TABLE, 'id')
                     ->asc(LinkModel::TABLE.'.id')
                     ->desc(ColumnModel::TABLE.'.position')
                     ->desc(TaskModel::TABLE.'.is_active')
                     ->asc(TaskModel::TABLE.'.position')
                     ->asc(TaskModel::TABLE.'.id')
                     ->findAll();
+    }
+    
+    public function findByTaskAndName($task, $name)
+    {
+        return $this->db->table(self::TABLE)
+            ->eq('task_id', $task)
+            ->eq('name', $name)
+            ->findOne();
     }
     
     public function findByTask($id)

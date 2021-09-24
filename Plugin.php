@@ -5,6 +5,7 @@ namespace Kanboard\Plugin\Ctec;
 use Kanboard\Core\Translator;
 use Kanboard\Core\Plugin\Base;
 use Kanboard\Plugin\Ctec\Api\Procedure\CodeReviewProcedure;
+use Kanboard\Plugin\Ctec\Api\Procedure\TransitionProcedure;
 
 class Plugin extends Base
 {
@@ -18,17 +19,20 @@ class Plugin extends Base
         $this->template->hook->attach('template:task:details:third-column', 'ctec:dashboard/task');
 
         $this->api->getProcedureHandler()->withClassAndMethod('getAllTaskOfSprintWithCodeReview', new CodeReviewProcedure($this->container), 'getAllTaskOfSprintWithCodeReview');
+        $this->api->getProcedureHandler()->withClassAndMethod('getAllTransitionsByTask', new TransitionProcedure($this->container), 'getAllTransitionsByTask');
     }
 
     public function getClasses()
     {
         return array(
             'Plugin\Ctec\Controller' => array(
+                'PairProgrammingController',
                 'CodeReviewController',
                 'DashboardController',
                 'SettingController'
             ),
             'Plugin\Ctec\Model' => array(
+                'PairProgrammingModel',
                 'CodeReviewModel'
             )
         );
@@ -56,7 +60,7 @@ class Plugin extends Base
 
     public function getPluginVersion()
     {
-        return '1.0.0';
+        return '1.1';
     }
 
     public function getPluginHomepage()
