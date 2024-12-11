@@ -1,0 +1,134 @@
+[v-cloak]>* {
+    display: none;
+}
+
+[v-cloak]::before {
+    content: "Carregando…";
+}
+
+#container {
+    width: 100%;
+    min-height: 100vh;
+    background: #353a40;
+    color: #fff;
+    font-family: sans-serif;
+}
+
+.kanban {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.kanban-column {
+    background: #fff;
+    color: #000;
+    margin: 5px 10px;
+    border-radius: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+    min-width: 420px;
+    max-width: 500px;
+    height: fit-content;
+}
+
+.kanban-column-title {
+    text-align: center;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    font-size: 20px;
+    min-width: 320px;
+}
+
+.kanban-column-ticket {
+    margin-bottom: 7px;
+    border-radius: 4px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.kanban-column-ticket-right {
+    width: 40px;
+}
+.kanban-column-ticket-left {
+    width: 80%;
+}
+.kanban-column-ticket-right,
+.kanban-column-ticket-left {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+}
+
+.kanban-column-ticket-left-title {
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.kanban-column-ticket-left-project {
+    font-weight: bolder;
+    font-size: 15px;
+}
+
+.kanban-column-ticket-right-time {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.kanban-column-ticket-right-avatar {
+    margin-top: 10px;
+    height: 35px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+.kanban-column-ticket-footer {
+    margin-top: 15px;
+    width: 100%;
+}
+
+.kanban-column-ticket-footer-codereview,
+.kanban-column-ticket-footer-pairprograming {
+    width: 100%;
+    text-align: end;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #00008b;
+}
+
+.kanban-column-ticket-footer-tags {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.kanban-column-ticket-footer-tags-item {
+    border: 1px solid #000;
+    padding: 5px;
+    border-radius: 4px;
+    width: max-content;
+    margin: 3px;
+    font-size: 12px;
+}
+
+.late-task {
+    border-top: 8px solid #ff0000 !important;
+}
+.task-board{
+    word-wrap: unset !important;
+    font-size: unset !important;
+}

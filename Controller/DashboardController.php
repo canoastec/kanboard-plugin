@@ -25,4 +25,36 @@ class DashboardController extends BaseController
             'timeChart' => json_encode($data['timeChart']),
         )));
     }
+
+    public function sprint()
+    {
+        $data['title'] = t('Dashboard Sprint');
+        $data['user'] = $this->getUser();
+        $this->hook->on('template:layout:css', array('template' => 'plugins/Ctec/Asset/Css/sprintStyle.css'));
+        $this->response->html($this->helper->layout->app('ctec:dashboard/sprint', array(
+            'title' => $data['title'],
+            'user' => $data['user'],
+        )));
+
+    }
+
+    public function sprintApi()
+    {
+        $sprintTasks = $this->codeReviewModel->getAll(7075);
+        $sprintTasks = collect($sprintTasks)->sortBy('project_name')->groupBy('column_title')->toArray();
+        if($sprintTasks) {
+            $sprintTasks = [
+                'Aguardando'    => (isset($sprintTasks['Aguardando'])) ? $sprintTasks['Aguardando'] : [],
+                'Executando'    => (isset($sprintTasks['Executando'])) ? $sprintTasks['Executando'] : [],
+                'Code Review'   => (isset($sprintTasks['Code Review'])) ? $sprintTasks['Code Review'] : [],
+                'Validando'     => (isset($sprintTasks['Validando'])) ? $sprintTasks['Validando'] : [],
+                'Pronto'        => (isset($sprintTasks['Pronto'])) ? $sprintTasks['Pronto'] : [],
+                'Homologação'   => (isset($sprintTasks['Homologação'])) ? $sprintTasks['Homologação'] : [],
+                'Produção'      => (isset($sprintTasks['Produção'])) ? $sprintTasks['Produção'] : [],
+            ];
+
+        }
+        
+        return $this->response->json($sprintTasks);
+    }
 }

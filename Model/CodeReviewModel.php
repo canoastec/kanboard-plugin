@@ -41,6 +41,7 @@ class CodeReviewModel extends Base
                         TaskModel::TABLE.'.owner_id AS task_assignee_id',
                         UserModel::TABLE.'.username AS task_assignee_username',
                         UserModel::TABLE.'.name AS task_assignee_name',
+                        UserModel::TABLE.'.avatar_path AS avatar_path',
                         ColumnModel::TABLE.'.title AS column_title',
                         ProjectModel::TABLE.'.name AS project_name',
                         PairProgrammingModel::TABLE.'.name AS pair_programming_name',
