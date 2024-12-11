@@ -29,11 +29,13 @@ class Plugin extends Base
                 'PairProgrammingController',
                 'CodeReviewController',
                 'DashboardController',
-                'SettingController'
+                'SettingController',
+                'GamificationController'
             ),
             'Plugin\Ctec\Model' => array(
                 'PairProgrammingModel',
-                'CodeReviewModel'
+                'CodeReviewModel',
+                'GamificationModel'
             )
         );
     }
