@@ -9,51 +9,15 @@
             <th>#</th>
             <th>Desenvolvedor</th>
             <th>Pontos</th>
-            <!-- <th>Time</th> -->
         </tr>
     </thead>
     <?php $position = 0; ?>
     <?php foreach ($list as $name => $score) { ?>
         <?php $position++; ?>
-        <tr
-            <?
-                // switch ($name) {
-                //     case "daniel.cornely": echo " style='background: green;'"; break;
-                //     case "erica.quevedo": echo "style='background: yellow;'"; break;
-                //     case "fabiano.carreires": echo "style='background: yellow;'"; break;
-                //     case "filipe.silva": echo "style='background: yellow;'"; break;
-                //     case "franklin.bueno": echo " style='background: green;'"; break;
-                //     case "gustavo.santos": echo " style='background: green;'"; break;
-                //     case "rafael.marques": echo " style='background: green;'"; break;
-                //     case "ramiro.vargas": echo " style='background: green;'"; break;
-                //     case "lucas.cunha": echo " style='background: green;'"; break;
-                //     case "lucas.rocha": echo "style='background: yellow;'"; break;
-                //     case "marlon.bueno": echo "style='background: yellow;'"; break;
-                //     case "matheus.freitas": echo "style='background: yellow;'"; break;
-                // }
-            ?>
-        >
+        <tr>
             <td><?= $position; ?></td>
             <td><?= ucwords(str_replace('.', ' ', $name)); ?></td>
             <td><?= $score; ?></td>
-            <!-- <td>
-                <?
-                    // switch ($name) {
-                    //     case "daniel.cornely": echo "Time ABC"; break;
-                    //     case "erica.quevedo": echo "Time XYZ"; break;
-                    //     case "fabiano.carreires": echo "Time XYZ"; break;
-                    //     case "filipe.silva": echo "Time XYZ"; break;
-                    //     case "franklin.bueno": echo "Time ABC"; break;
-                    //     case "gustavo.santos": echo "Time ABC"; break;
-                    //     case "rafael.marques": echo "Time ABC"; break;
-                    //     case "ramiro.vargas": echo "Time ABC"; break;
-                    //     case "lucas.cunha": echo "Time ABC"; break;
-                    //     case "lucas.rocha": echo "Time XYZ"; break;
-                    //     case "marlon.bueno": echo "Time XYZ"; break;
-                    //     case "matheus.freitas": echo "Time XYZ"; break;
-                    // }
-                ?>
-            </td> -->
         </tr>
     <?php } ?>
 </table>

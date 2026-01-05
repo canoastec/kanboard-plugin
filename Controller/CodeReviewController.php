@@ -10,10 +10,12 @@ class CodeReviewController extends BaseController
 
     public function index()
     {
+        $user = $this->getUser();
+
         $this->response->html($this->helper->layout->dashboard('ctec:dashboard/codereview', array(
             'title' => 'CodeReview / Desenvolvedor',
-            'user' => $this->getUser(),
-            'reviews' => $this->codeReviewModel->all()
+            'user' => $user,
+            'paginator' => $this->codeReviewPagination->getDashboardPaginator('index', 25)
         )));
     }
 
@@ -60,6 +62,6 @@ class CodeReviewController extends BaseController
         curl_close($curl);
         
         $this->codeReviewModel->delete($id);
-        $this->response->redirect($this->helper->url->to('CodeReviewController', 'index', array('plugin' => 'ctec')), true);
+        $this->response->redirect($this->helper->url->to('TaskViewController', 'show', array('task_id' => $task)), true);
     }
 }

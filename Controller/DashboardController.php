@@ -40,7 +40,7 @@ class DashboardController extends BaseController
 
     public function sprintApi()
     {
-        $sprintTasks = $this->codeReviewModel->getAll(7075);
+        $sprintTasks = $this->dashboardCtecModel->getAll(7149);
         $sprintTasks = collect($sprintTasks)->sortBy('project_name')->groupBy('column_title')->toArray();
         if($sprintTasks) {
             $sprintTasks = [

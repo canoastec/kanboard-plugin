@@ -1,8 +1,8 @@
 <template>
-    <div class="kanban-column-ticket late-task task-board" :class="'color-'+task.color_id" v-if="task">
+    <div class="kanban-column-ticket late-task task-board" :class="'color-'+task.color_id" v-if="task" @click="openTask">
         <div class="kanban-column-ticket-left">
             <div class="kanban-column-ticket-left-title">
-                #{{ task.id }} - {{ task.title }}
+                #{{ task.task_id }} - {{ task.title }}
             </div>
             <div class="kanban-column-ticket-left-project">
                 {{ task.project_name }}
@@ -13,26 +13,26 @@
                 {{ task.task_time_estimated }}h
             </div>
             <div class="avatar avatar-48 avatar-inline" v-if="task.avatar_path">
-                <img :src="'https://sistemas.canoas.rs.gov.br/kanboard/?controller=AvatarFileController&action=image&user_id='+task.task_assignee_id+'&size=48&v=13'" alt="Usuario Fantasma" title="Usuario Fantasma">
+                <img :src="getAvatar" :alt="task.task_assignee_name" :title="task.task_assignee_name">
             </div>
-            <div class="kanban-column-ticket-right-avatar" v-else>
-                <span else>
+            <div class="kanban-column-ticket-right-avatar" v-else-if="task.task_assignee_username">
+                <span>
                     {{getInitials()}}
                 </span>
             </div>
         </div>
         <div class="kanban-column-ticket-footer">
-            <div class="kanban-column-ticket-footer-pairprograming">
-                Pareado com usuario.fantasma
+            <div class="kanban-column-ticket-footer-pairprograming" v-if="task.pair_programming_name">
+                Pareado com {{ displayName(task.pair_programming_name) }}
             </div>
-            <div class="kanban-column-ticket-footer-codereview">
-                Code Review por usuario.fantasma
+            <div class="kanban-column-ticket-footer-codereview" v-if="task.code_review_name">
+                Code Review por {{ displayName(task.code_review_name) }}
             </div>
             <div class="kanban-column-ticket-footer-tags">
-                <span class="kanban-column-ticket-footer-tags-item">Melhoria</span>
-                <span class="kanban-column-ticket-footer-tags-item">Ver Comentarios</span>
+                <span class="kanban-column-ticket-footer-tags-item task-tag" v-for="tag in task.tags" :key="tag.id" :class="'color-'+tag.color_id">
+                    {{ tag.name }}
+                </span>
             </div>
-
         </div>
     </div>
 </template>
@@ -48,6 +48,7 @@ export default {
     },
     methods: {
         getInitials() {
+            if(!this.task.task_assignee_username) return '';
             let initials = '';
 
             const words = this.task.task_assignee_username.split('.', 2);
@@ -56,8 +57,22 @@ export default {
             });
 
             return initials.toUpperCase();  
+        },
+        displayName(name) {
+            return name.split('.')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        },
+        openTask(){
+            window.open('https://sistemas.canoas.rs.gov.br/kanboard/?controller=TaskViewController&action=show&task_id='+this.task.task_id, '_blank');
+        },
+    },    
+    computed: {
+        getAvatar(){
+            let versionImg = Math.random() * (1000 - 1) + 1;
+            return 'https://sistemas.canoas.rs.gov.br/kanboard/?controller=AvatarFileController&action=image&user_id='+this.task.task_assignee_id+'&size=48&v='+versionImg;
         }
-    },      
+    }  
 }
 
 </script>

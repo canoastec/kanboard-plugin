@@ -11,7 +11,7 @@ class Plugin extends Base
 {
     public function initialize()
     {
-        $this->setContentSecurityPolicy(array('script-src' => "'self' 'unsafe-inline' 'unsafe-eval'"));
+        $this->setContentSecurityPolicy(array('script-src' => "'self' 'unsafe-inline' 'unsafe-eval' https://esm.sh"));
         $this->hook->on('template:layout:js', array('template' => 'plugins/Ctec/dist/all.js'));
 
         $this->template->hook->attach('template:config:sidebar', 'ctec:config/sidebar');
@@ -29,13 +29,20 @@ class Plugin extends Base
                 'PairProgrammingController',
                 'CodeReviewController',
                 'DashboardController',
+                'PlanningPokerController',
                 'SettingController',
                 'GamificationController'
             ),
             'Plugin\Ctec\Model' => array(
                 'PairProgrammingModel',
                 'CodeReviewModel',
+                'DashboardCtecModel',
+                'PlanningPokerCtecModel',
                 'GamificationModel'
+            ),
+            'Plugin\Ctec\Pagination' => array(
+                'CodeReviewPagination',
+                'PairProgrammingPagination'
             )
         );
     }

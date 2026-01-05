@@ -12,28 +12,19 @@ class GamificationController extends BaseController
     {
       
         $list = collect($this->gamificationModel->all());
+              
         $scoresByDelivery = $list->groupBy('username')->map(function($dev) {
             return $dev->sum(function($item) {
-                $x = 1;
-                // if($item['username'] == 'daniel.cornely'){
-                //     $x = 0.8;
-                // }
-                // if($item['username'] == 'gustavo.bsantos'){
-                //     $x = 0.8;
-                // }
-                // if($item['username'] == 'eduardo.dasilva'){
-                //     $x = 0.8;
-                // }
-                if($item['category'] == 'Process') return 24 * $x;
-                if($item['category'] == 'Bug') return 8 * $x;
-                return $item['time_estimated'] * $x;
+                if($item['category'] == 'Process') return 24;
+                if($item['category'] == 'Bug') return 8;
+                return $item['time_estimated'];
             });
         });
 
         $scoresByCodeReview = collect();
-        // $scoresByCodeReview = $list->groupBy('codereview_username')->map(function($dev) {
-        //     return $dev->count() * 2;
-        // });
+        $scoresByCodeReview = $list->groupBy('codereview_username')->map(function($dev) {
+            return $dev->count() * 0.5;
+        });
        
         $scoresByPairProgramming = collect();
         $scoresByPairProgramming = $list->groupBy('pairprogramming_username')->map(function($dev) {
@@ -44,13 +35,13 @@ class GamificationController extends BaseController
             });
         });
         $scoresTotal = collect([
-            // "eduardo.souza" => "eduardo.dasilva",
+            "eduardo.souza" => "eduardo.dasilva",
             'daniel.cornely' => 'daniel.cornely', 
             'fabiano.carreires' => 'fabiano.carreires', 
             'pedro.silveira' => 'pedro.silveira', 
             'franklin.bueno' => 'franklin.bueno', 
             'gustavo.santos' => 'gustavo.bsantos', 
-            // 'rafael.marques' => 'rafael.marques',
+            'rafael.marques' => 'rafael.marques',
             'ramiro.vargas' => 'ramiro.vargas',
             "lucas.cunha" => "lucas.cunha",
             "lucas.rocha" => "lucas.rocha",

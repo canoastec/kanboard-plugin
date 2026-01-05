@@ -29,7 +29,17 @@
             }
         },
         created(){
+            setInterval(() => {
+                this.getSprint();
+            }, 100000);
             this.getSprint();
         }
 	});
 </script>
+
+<style>
+    .page {
+        margin-left: unset;
+        margin-right: unset;
+    }
+</style>

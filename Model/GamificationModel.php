@@ -14,7 +14,7 @@ class GamificationModel extends Base
     public function all()
     {
         $firstDayOfMonth = $this->dateParser->getTimestamp(date("d/m/Y", mktime(0, 0, 0, date('m')-0, 1, date('Y'))));
-        // $firstDayOfMonth = $this->dateParser->getTimestamp('01/12/2024');
+        // $firstDayOfMonth = $this->dateParser->getTimestamp('01/07/2025');
        
         $from = $this->dateParser->removeTimeFromTimestamp(strtotime('-2 month', $firstDayOfMonth));
         $to = $this->dateParser->removeTimeFromTimestamp(strtotime('-1 month', $firstDayOfMonth));
@@ -39,6 +39,7 @@ class GamificationModel extends Base
             ->table(TaskModel::TABLE)
             ->columns(
                 TaskModel::TABLE.'.id',
+                'MAX('.TaskModel::TABLE.'.project_id) AS project_id',
                 'MAX('.ColumnModel::TABLE.'.title) AS title',
                 'MAX('.TaskModel::TABLE.'.time_estimated) AS time_estimated',
                 'MAX('.UserModel::TABLE.'.name) AS name',

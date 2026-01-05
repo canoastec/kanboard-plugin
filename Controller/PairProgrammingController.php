@@ -10,10 +10,12 @@ class PairProgrammingController extends BaseController
 
     public function index()
     {
+        $user = $this->getUser();
+
         $this->response->html($this->helper->layout->dashboard('ctec:dashboard/pairprogramming', array(
             'title' => 'Pareamento / Desenvolvedor',
-            'user' => $this->getUser(),
-            'pairProgrammings' => $this->pairProgrammingModel->all()
+            'user' => $user,
+            'paginator' => $this->pairProgrammingPagination->getDashboardPaginator('index', 25)
         )));
     }
 
@@ -68,6 +70,6 @@ class PairProgrammingController extends BaseController
         curl_close($curl);
         
         $this->pairProgrammingModel->delete($id);
-        $this->response->redirect($this->helper->url->to('PairProgrammingController', 'index', array('plugin' => 'ctec')), true);
+        $this->response->redirect($this->helper->url->to('TaskViewController', 'show', array('task_id' => $task)), true);
     }
 }
