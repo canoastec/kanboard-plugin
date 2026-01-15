@@ -362,7 +362,6 @@
 
             handleMessage(data) {
                 const parsed = MessageParser.parse(data)
-                console.log('Received message:', parsed)
 
                 if (!parsed) {
                     this.showToast('Mensagem desconhecida do servidor')
@@ -442,7 +441,7 @@
                 this.isLoadingScore = true
                 
                 $.ajax({
-                    url: '/?controller=PlanningPokerController&action=updateScore&plugin=Ctec',
+                    url: 'https://sistemas.canoas.rs.gov.br/kanboard/?controller=PlanningPokerController&action=updateScore&plugin=Ctec',
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({
@@ -592,24 +591,55 @@
                         this._audioCtx = new (window.AudioContext || window.webkitAudioContext)()
                     }
                     const ctx = this._audioCtx
-                    const now = ctx.currentTime
-                    const gain = ctx.createGain()
-                    gain.connect(ctx.destination)
-                    gain.gain.setValueAtTime(0.0001, now)
+                    const now = ctx.currentTime;
 
-                    // sequence of three short beeps
-                    const freqs = [880, 1100, 880]
-                    freqs.forEach((f, i) => {
-                        const osc = ctx.createOscillator()
-                        osc.type = 'sine'
-                        osc.frequency.setValueAtTime(f, now + i * 0.2)
-                        osc.connect(gain)
-                        osc.start(now + i * 0.2)
-                        osc.stop(now + i * 0.2 + 0.12)
-                    })
-                    // ramp gain for audible clicks smoothing
-                    gain.gain.linearRampToValueAtTime(0.2, now + 0.01)
-                    gain.gain.linearRampToValueAtTime(0.0001, now + freqs.length * 0.2 + 0.15)
+                    const gain = ctx.createGain();
+                    gain.connect(ctx.destination);
+                    gain.gain.setValueAtTime(0.0001, now);
+
+                    const compressor = ctx.createDynamicsCompressor();
+                    compressor.connect(gain);
+
+                    const master = compressor;
+
+                    const sirenLFO = ctx.createOscillator();
+                    const sirenDepth = ctx.createGain();
+
+                    sirenLFO.type = "triangle";
+                    sirenLFO.frequency.value = 2;
+                    sirenDepth.gain.value = 200;
+
+                    sirenLFO.connect(sirenDepth);
+
+                    const baseFreqs = [900, 1200];
+
+                    const toneDuration = 0.35;
+                    const gap = 0.4;
+                    const extraTime = 2.0;
+
+                    baseFreqs.forEach((baseFreq, i) => {
+                    const osc = ctx.createOscillator();
+
+                    osc.type = "square";
+                    osc.frequency.setValueAtTime(baseFreq, now + i * gap);
+
+                    sirenDepth.connect(osc.frequency);
+
+                    osc.connect(master);
+
+                    osc.start(now + i * gap);
+                    osc.stop(now + i * gap + toneDuration + extraTime);
+                    });
+
+                    sirenLFO.start(now);
+                    sirenLFO.stop(now + baseFreqs.length * gap + extraTime + 0.2);
+
+                    gain.gain.linearRampToValueAtTime(0.6, now + 0.01);
+                    gain.gain.linearRampToValueAtTime(
+                        0.0001,
+                        now + baseFreqs.length * gap + extraTime + 0.2
+                    );
+
                 } catch (e) {
                     console.warn('Beep failed', e)
                 }
@@ -621,7 +651,12 @@
             },
 
             loadTicketContent(ticketId) {
-                const proxyUrl = `/?controller=PlanningPokerController&action=proxyTicket&plugin=Ctec&task_id=${ticketId}`
+                /**
+                 * Mensagem para quem for dar manutenção. Em homologação vai apontar pra produção, então cuidado.
+                 * Eu podia parametrizar, mas azar, é verão.
+                 * ass. Dev God Supremo, oh melhor tech leader 
+                 */
+                const proxyUrl = `https://sistemas.canoas.rs.gov.br/kanboard/?controller=PlanningPokerController&action=proxyTicket&plugin=Ctec&task_id=${ticketId}`
                 const directUrl = `https://sistemas.canoas.rs.gov.br/kanboard/?controller=TaskViewController&action=show&task_id=${ticketId}`
                 
                 $('#ticketContentArea').html('<div class="loading-ticket"><div class="spinner"></div>Carregando ticket #' + ticketId + '...</div>')
@@ -1154,6 +1189,7 @@
         transition: all 0.3s;
         display: inline-block;
         margin-top: 10px;
+        z-index: 20;
     }
 
     .btn-open-external:hover {
