@@ -30,17 +30,31 @@ class DashboardController extends BaseController
     {
         $data['title'] = t('Dashboard Sprint');
         $data['user'] = $this->getUser();
+        $sprints = $this->dashboardCtecModel->getAllSprints(10);
+        if(isset($sprints[1])){
+            $sprintCurrent = $sprints[1];
+        }else{
+            $sprintCurrent = null;
+        }
         $this->hook->on('template:layout:css', array('template' => 'plugins/Ctec/Asset/Css/sprintStyle.css'));
         $this->response->html($this->helper->layout->app('ctec:dashboard/sprint', array(
             'title' => $data['title'],
             'user' => $data['user'],
+            'sprints' => $sprints,
+            'sprintCurrent' => $sprintCurrent
         )));
 
     }
 
     public function sprintApi()
     {
-        $sprintTasks = $this->dashboardCtecModel->getAll(7149);
+        $sprintId = $this->request->getStringParam('sprint_id', null);
+        if (!$sprintId) {
+            $sprints = $this->dashboardCtecModel->getAllSprints(2);
+            $sprintId = $sprints[1]['id'];
+        }
+
+        $sprintTasks = $this->dashboardCtecModel->getAll($sprintId);
         $sprintTasks = collect($sprintTasks)->sortBy('project_name')->groupBy('column_title')->toArray();
         if($sprintTasks) {
             $sprintTasks = [

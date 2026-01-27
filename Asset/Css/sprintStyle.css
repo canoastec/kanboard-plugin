@@ -1,5 +1,6 @@
-[v-cloak]>* {
+[v-cloak] {
     display: none;
+    opacity: 0.5;
 }
 
 [v-cloak]::before {
@@ -19,6 +20,35 @@
     flex-wrap: wrap;
 }
 
+.sprint-container {
+    width: 100%; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    color: #fff; 
+    font-weight: 600; 
+    font-size: 28px; 
+    margin-bottom: 20px;
+    padding-top: 10px;
+    flex-direction: column;
+}
+.sprint-container select {
+    border: none;
+    background-color: transparent;
+    color: #fff;
+    font-weight: 500;
+}
+.sprint-container select option {
+    color: #000;
+    font-size: 14px;
+}
+
+.sprint-info {
+    font-weight: 100;
+    margin-top: 10px;
+    font-size: 24px;
+}
+
 .kanban-column {
     background: #fff;
     color: #000;
@@ -26,10 +56,8 @@
     border-radius: 4px;
     padding-left: 10px;
     padding-right: 10px;
-    width: 100%;
-    min-width: 420px;
-    max-width: 441px;
     height: fit-content;
+    flex: 1;
 }
 
 .kanban-column-title {
@@ -140,4 +168,42 @@
 .task-board{
     word-wrap: unset !important;
     font-size: unset !important;
+    border-width: 2px;
+}
+.kanban-column-ticket-blocked {
+    background-color: #ff4d4d;
+    color: #fff;
+    padding: 5px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 10px;
+    width: 100%;
+    cursor: pointer;
+}
+.kanban-column-ticket-related {
+    background-color: #ffa500;
+    color: #fff;
+    padding: 5px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 10px;
+    width: 100%;
+    cursor: pointer;
+}
+.kanban-column-ticket-footer-modification {
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #555555;
+    text-align: end;
+}
+.blocked-task {
+    cursor: not-allowed;
+}
+.danger {
+    box-shadow: 0 0 15px 9px #ff4d4d
 }
